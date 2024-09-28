@@ -6,6 +6,9 @@ const mongoose = require('mongoose')
 const kanbanRoute = require('./routes/kanbanRoute')
 
 app.use(express.json())
+app.use(cors({
+    origin: "*"
+}))
 
 app.use('/kanban', kanbanRoute)
 

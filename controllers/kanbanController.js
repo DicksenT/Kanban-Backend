@@ -1,6 +1,14 @@
 const model = require('../model/kanbanModel')
 
 
+const getData = async(req,res) =>{
+    const kanban = await model.find({})
+    if(kanban){
+        return res.status(200).json(kanban)
+    }
+    res.status(400).json({error: 'error'})
+}
+
 const createData = async(req,res) =>{
     console.log('past here');
     
@@ -25,4 +33,4 @@ const deleteData = async(req,res)=>{
     res.status(200).json(workout)
 }
 
-module.exports = {createData, deleteData}
+module.exports = {createData, deleteData, getData}
