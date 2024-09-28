@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node Server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -8,5 +8,12 @@
     "express": "^4.21.0",
     "mongoose": "^8.6.3",
     "nodemon": "^3.1.7"
-  }
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "Server.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
