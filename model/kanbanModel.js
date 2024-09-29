@@ -2,11 +2,11 @@ const mongoose = require('mongoose')
 const schema = mongoose.Schema
 
 const kanbanSchema = new schema({
-    boardName:{
+    name:{
         type: String,
         required: true
     },
-    boardColumn:{
+    columns:{
         type: Array,
         required:false
     }

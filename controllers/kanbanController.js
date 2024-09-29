@@ -12,9 +12,9 @@ const getData = async(req,res) =>{
 const createData = async(req,res) =>{
     console.log('past here');
     
-    const {boardName, boardColumn} = req.body
+    const {name, columns} = req.body
     try{
-        const workout = await model.create({boardName, boardColumn})
+        const workout = await model.create({name, columns})
         res.status(200).json(workout)
     }catch(error){
         res.status(400).json({mssg: 'here'})
