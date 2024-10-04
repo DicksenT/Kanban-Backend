@@ -7,10 +7,10 @@ const boardScheme = new schema({
         type:String,
         required:true
     },
-    columns:{
+    columns:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Column'
-    }
+    }]
 })
 
 module.exports = mongoose.model('Board', boardScheme)

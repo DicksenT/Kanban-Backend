@@ -6,7 +6,7 @@ const taskScheme = new scheme({
     title:{type:String, required:true},
     description:{type:String},
     status:{type:String, required:true},
-    subtasks:{type:mongoose.Schema.Types.ObjectId, ref:'Subtasks'}
+    subtasks:[{type:mongoose.Schema.Types.ObjectId, ref:'Subtasks'}]
 })
 
 module.exports = mongoose.model('Tasks', taskScheme)
