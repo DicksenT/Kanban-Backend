@@ -1,4 +1,4 @@
-const model = require('../model/kanbanModel')
+const model = require('../model/boardModel')
 
 
 const getData = async(req,res) =>{
