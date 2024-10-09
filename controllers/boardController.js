@@ -31,28 +31,46 @@ const addBoard = async(req,res) =>{
 //
 const editBoard = async(req,res) =>{
     const {id} = req.params
-    const {boardId, name, columns} = req.body
+    const {name, columns} = req.body
     try{
-        const editBoard = await Board.findByIdAndUpdate(id,{
-            name:name
-        })
-        const editColumns = await Promise.all(columns.map(async(column) =>{
-            const col = await Column.findById(column._id)
-            if(col){
-                return col._id
-            }
-            const newCol = new Column({
-                boardId: boardId,
-                name:column.name
+        const updatedBoard = await Board.findByIdAndUpdate(id,
+            {name:name},
+            {new: true}
+        )
+        if(columns){
+            const oldCol = []
+            const newCol = []
+
+            columns.forEach((col) =>{
+                if(col._id){
+                    oldCol.push(col._id)
+                }
+
+                else{
+                    newCol.push(col)
+                }
             })
-            await newCol.save()
-            return newCol._id
-        }))
-        editBoard.columns.map(async(col) =>{
-            if(!editColumns.includes(col._id)){
-                const delCol = await Column.findById(col._id)
-            }
-        })
+
+            const newCreatedColumn = await Promise.all(newCol.map(async(col) =>{
+                const newColumn = new Column({
+                    boardId: id,
+                    name:col.name
+                })
+                await newColumn.save()
+                return newColumn._id
+            }))
+
+            const updatedColumns = oldCol.concat(newCreatedColumn)
+
+
+            const columnsToDelete = updatedBoard.columns.filter((col) => !updatedColumns.includes(col.toString()))
+
+            await Promise.all(columnsToDelete.map(async(col) =>{
+                await Column.findByIdAndDelete(col._id)
+            }))
+        }
+    
+        
     }catch(error){
         res.status(400).json(error)
     }
