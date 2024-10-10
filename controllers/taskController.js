@@ -33,6 +33,9 @@ const editTask = async(req,res) =>{
     const {id} = req.params
     const {task, subtasks} = req.body
 
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).jsoN({mssg: 'Id is not valid'})
+    }
     try{
         const updatedTask = await Task.findByIdAndUpdate(id,
             {
@@ -86,4 +89,21 @@ const editTask = async(req,res) =>{
         res.status(400).json(error)
     }
 }
- 
+
+
+const delTask = async(req,res) =>{
+    const {id} = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).jsoN({mssg: 'Id is not valid'})
+    }
+    try{
+        await Task.findByIdAndDelete(id)
+        res.status(200).json({mssg:'Task Successfully deleted'})
+    }catch(error){
+        res.status(400).json(error)
+    }
+}
+
+
+module.exports = {addTask, editTask, delTask}

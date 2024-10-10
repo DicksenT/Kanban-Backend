@@ -17,9 +17,15 @@ const addColumn = async(req,res) =>{
 
 }
 
+// delete soon!
 const changeColumn = async(req, res) =>{
     const {id} = req.params
     const {newCol}= req.body
+
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).jsoN({mssg: 'Id is not valid'})
+    }
+
     try{
     const col = await Column.findByIdAndUpdate(id,{
         ...newCol
@@ -33,6 +39,11 @@ const changeColumn = async(req, res) =>{
 
 const deleteColumn = async(req, res) =>{
     const {id} = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).jsoN({mssg: 'Id is not valid'})
+    }
+
     try{
         const col = await Column.findByIdAndDelete(id)
         res.status(200).json(col)
@@ -41,4 +52,4 @@ const deleteColumn = async(req, res) =>{
     }
 }
 
-module.exports = {addColumn, changeColumn, deleteColumn}
+module.exports = {addColumn, deleteColumn}

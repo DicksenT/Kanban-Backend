@@ -32,11 +32,19 @@ const addBoard = async(req,res) =>{
 const editBoard = async(req,res) =>{
     const {id} = req.params
     const {name, columns} = req.body
+
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).jsoN({mssg: 'Id is not valid'})
+    }
+
     try{
         const updatedBoard = await Board.findByIdAndUpdate(id,
             {name:name},
             {new: true}
         )
+        if(!updatedBoard){
+            res.status(400).json({mssg:'Board Not Found'})
+        }
         if(columns){
             const oldCol = []
             const newCol = []
@@ -68,11 +76,31 @@ const editBoard = async(req,res) =>{
             await Promise.all(columnsToDelete.map(async(col) =>{
                 await Column.findByIdAndDelete(col._id)
             }))
+            await Board.findByIdAndUpdate(id,{
+                columns:updatedColumns
+            })
         }
-    
+
+        
+    res.status(200).json({mssg: 'Board successfully updated'})
         
     }catch(error){
         res.status(400).json(error)
     }
 
 }
+
+const delBoard = async(req,res) =>{
+    const {id} = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).jsoN({mssg: 'Id is not valid'})
+    }
+    try{
+        await Board.findByIdAndDelete(id)
+        res.status(200).json({mssg: 'Board deleted successfully'})
+    }catch(error){
+        res.status(400).json(error)
+    }
+}
+
+module.exports = {addBoard, editBoard, delBoard}
