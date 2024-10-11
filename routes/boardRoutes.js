@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router
+const router = express.Router()
 const {addBoard, editBoard, delBoard} = require('../controllers/boardController')
 
 router.post('/', addBoard)

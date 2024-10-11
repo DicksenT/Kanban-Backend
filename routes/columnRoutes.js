@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router
+const router = express.Router()
 const {addColumn,deleteColumn} = require('../controllers/columnController')
 
 router.post('/:id', addColumn)
