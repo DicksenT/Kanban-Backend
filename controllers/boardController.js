@@ -21,7 +21,9 @@ const addBoard = async(req,res) =>{
             newBoard.columns = newColumns
             await newBoard.save()
         }
-        res.status(200).json(newBoard)
+
+        const returnBoard = await Board.findById(newBoard._id).populate('columns')
+        res.status(200).json(returnBoard)
     }catch(error){
         res.status(400).json(error)
     }
@@ -81,7 +83,7 @@ const editBoard = async(req,res) =>{
             })
         }
 
-        
+    const returnBoard = await Board.findById(id).populate('columns')
     res.status(200).json({mssg: 'Board successfully updated'})
         
     }catch(error){

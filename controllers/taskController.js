@@ -23,7 +23,10 @@ const addTask = async(req,res) =>{
             }))
             task.subtasks.push(...newSubtasks)
         }
-        res.status(200).json(task)
+
+
+        const returnTask = await Task.findById(task._id).populate('subtasks')
+        res.status(200).json(returnTask)
     }catch(error){
         res.status(400).json(error)
     }
@@ -84,7 +87,9 @@ const editTask = async(req,res) =>{
                 subtasks:updatedSubtask
             })
         }
-        res.status(200).json({mssg: 'Task Updated'})
+
+        const returnTask = await Task.findById(id).populate('subtasks')
+        res.status(200).json(returnTask)
     }catch(error){
         res.status(400).json(error)
     }
