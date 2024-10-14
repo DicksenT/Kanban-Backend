@@ -14,9 +14,11 @@ app.use(cors({
 const boardRoute = require('./routes/boardRoutes')
 const columnRoute = require('./routes/columnRoutes')
 const taskRoutes = require('./routes/taskRoutes')
+const userRoutes = require('./routes/userRoutes')
 app.use('/board', boardRoute)
-app.use('./column', columnRoute)
-app.use('./task',taskRoutes)
+app.use('/column', columnRoute)
+app.use('/task',taskRoutes)
+app.use('/user', userRoutes)
 
 
 mongoose.connect(process.env.DB_URI)
