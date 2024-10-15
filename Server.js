@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 
 app.use(express.json())
 app.use(cors({
-    origin: "*"
+    origin: "https://kanban-task-management-web-app-86h6.onrender.com"
 }))
 
 //ROUTES

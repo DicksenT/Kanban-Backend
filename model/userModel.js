@@ -4,7 +4,7 @@ const scheme = mongoose.Schema
 const validator = require('validator')
 
 //brcypt for hashing password
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 const userScheme = new scheme({
     email:{type:String, required:true, unique:true},
