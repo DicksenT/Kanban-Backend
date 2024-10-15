@@ -47,10 +47,14 @@ const editBoard = async(req,res) =>{
         if(!updatedBoard){
             res.status(400).json({mssg:'Board Not Found'})
         }
+
+        //check if columns available
         if(columns){
             const oldCol = []
             const newCol = []
 
+
+            //separate old column and new column
             columns.forEach((col) =>{
                 if(col._id){
                     oldCol.push(col._id)
@@ -61,6 +65,7 @@ const editBoard = async(req,res) =>{
                 }
             })
 
+            //create new Column for newCol array
             const newCreatedColumn = await Promise.all(newCol.map(async(col) =>{
                 const newColumn = new Column({
                     boardId: id,
@@ -70,21 +75,25 @@ const editBoard = async(req,res) =>{
                 return newColumn._id
             }))
 
+            //combine old and newly created columns
             const updatedColumns = oldCol.concat(newCreatedColumn)
 
-
+            //filter out to find which column to deleted
             const columnsToDelete = updatedBoard.columns.filter((col) => !updatedColumns.includes(col.toString()))
 
             await Promise.all(columnsToDelete.map(async(col) =>{
                 await Column.findByIdAndDelete(col._id)
             }))
+
+            //replace all boardcolumn with updated one
             await Board.findByIdAndUpdate(id,{
                 columns:updatedColumns
             })
         }
-
+    
+    //return the board, make sure to populate since it going to replace data in reducer
     const returnBoard = await Board.findById(id).populate('columns')
-    res.status(200).json({mssg: 'Board successfully updated'})
+    res.status(200).json(returnBoard)
         
     }catch(error){
         res.status(400).json(error)
