@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken')
 
-const RequireAuth = async (req,res,next) =>{
-    const {authorization} = req.headers
-    if(!authorization){
+const RequireAuth = (req,res,next) =>{
+    const token = req.cookies.token
+    if(!token){
         return res.status(401).json({mssg: 'Token is unavailable'})
     }
-    const token= authorization.split(' ')[1]
     try{
         const decode = jwt.verify(token, process.env.SECRET)
         req.user = decode
