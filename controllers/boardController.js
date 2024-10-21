@@ -3,9 +3,10 @@ const Column = require('../model/columnModel')
 const mongoose = require('mongoose')
 
 const addBoard = async(req,res) =>{
-    const {userId, name, columns} = req.body
+    const userId = req.user.id
+    const {name, columns} = req.body
     try{
-        const newBoard = new Board({userId,name})
+        const newBoard = new Board({userId, name})
         await newBoard.save()
 
         if(columns){
@@ -23,15 +24,16 @@ const addBoard = async(req,res) =>{
         }
 
         const returnBoard = await Board.findById(newBoard._id).populate('columns')
-        res.status(200).json(returnBoard)
+        return res.status(200).json(returnBoard)
     }catch(error){
-        res.status(400).json(error)
+        return res.status(400).json(error)
     }
 }
 
 
 //
 const editBoard = async(req,res) =>{
+    const userId = req.user.id
     const {id} = req.params
     const {name, columns} = req.body
 
@@ -40,14 +42,11 @@ const editBoard = async(req,res) =>{
     }
 
     try{
-        const updatedBoard = await Board.findByIdAndUpdate(id,
-            {name:name},
-            {new: true}
-        )
+        const updatedBoard = await Board.find({_id: id, userId:userId})
         if(!updatedBoard){
-            res.status(400).json({mssg:'Board Not Found'})
+           return res.status(400).json({mssg:'Board Not Found'})
         }
-
+        updatedBoard.name = name
         //check if columns available
         if(columns){
             const oldCol = []
@@ -86,32 +85,44 @@ const editBoard = async(req,res) =>{
             }))
 
             //replace all boardcolumn with updated one
-            await Board.findByIdAndUpdate(id,{
-                columns:updatedColumns
-            })
+            updatedBoard.columns = updatedColumns
         }
     
+    await updatedBoard.save()
     //return the board, make sure to populate since it going to replace data in reducer
-    const returnBoard = await Board.findById(id).populate('columns')
-    res.status(200).json(returnBoard)
+    const returnBoard = await Board.findById(id).populate({
+        path:'columns',
+        populate:{
+            path:'task',
+            populate: {
+                path:'subtasks'
+            }
+        }
+    })
+    return res.status(200).json(returnBoard)
         
     }catch(error){
-        res.status(400).json(error)
+        return res.status(400).json(error)
     }
 
 }
 
 const delBoard = async(req,res) =>{
+    const userId = req.user.id
     const {id} = req.params
     if(!mongoose.Types.ObjectId.isValid(id)){
         return res.status(400).jsoN({mssg: 'Id is not valid'})
     }
     try{
-        await Board.findByIdAndDelete(id)
-        res.status(200).json({mssg: 'Board deleted successfully'})
+        const deletedBoard =await Board.find({_id:id, userId:userId})
+        if(!deletedBoard){
+            return res.status(400).json({mssg:'Board is not found or not authorized'})
+        }
+        await deletedBoard.remove()
+        return res.status(200).json({mssg: 'Board deleted successfully'})
     }catch(error){
-        res.status(400).json(error)
+        return res.status(400).json(error)
     }
 }
 
-module.exports = {addBoard, editBoard, delBoard}
+module.exports = {addBoard, editBoard, delBoard, getData}
