@@ -125,4 +125,4 @@ const delBoard = async(req,res) =>{
     }
 }
 
-module.exports = {addBoard, editBoard, delBoard, getData}
+module.exports = {addBoard, editBoard, delBoard}
