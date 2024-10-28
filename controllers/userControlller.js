@@ -38,7 +38,7 @@ const userSignUp = async(req,res) =>{
 const userLogin = async(req,res) =>{
     const {email, password} = req.body
     try{
-        const user = User.userLogin(email,password)
+        const user = User.login(email,password)
         const token = createToken(user._id)
         res.cookie('token', token,{
             httpOnly:true,
