@@ -19,7 +19,7 @@ const userSignUp = async(req,res) =>{
         res.cookie('token', token,{
             httpOnly:true,
             secure:process.env.NODE_ENV === 'production',
-            maxAge:360000,
+            maxAge:15 * 60 * 1000,
             sameSite:'strict'
         })
         const refreshToken = createRefreshToken(newuser._id)
@@ -31,7 +31,7 @@ const userSignUp = async(req,res) =>{
         })
         return res.status(200).json(email)
     }catch(error){
-        return res.status(400).json(error)
+        return res.status(400).json({mssg: 'Account already exist'})
     }
 }
 
@@ -43,7 +43,7 @@ const userLogin = async(req,res) =>{
         res.cookie('token', token,{
             httpOnly:true,
             secure:process.env.NODE_ENV === 'production',
-            maxAge:360000,
+            maxAge:15 * 60 * 1000,
             sameSite:'strict'
         })
         const refreshToken = createRefreshToken(user._id)
@@ -55,7 +55,7 @@ const userLogin = async(req,res) =>{
         })
         return res.status(200).json(email)
     }catch(error){
-        return res.status(400).json(error)
+        return res.status(400).json({mssg: 'Account do not exist'})
     }
 }
 
