@@ -111,7 +111,7 @@ const delBoard = async(req,res) =>{
     const userId = req.user.id
     const {id} = req.params
     if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(400).jsoN({mssg: 'Id is not valid'})
+        return res.status(400).json({mssg: 'Id is not valid'})
     }
     try{
         const deletedBoard =await Board.find({_id:id, userId:userId})

@@ -31,7 +31,7 @@ const userSignUp = async(req,res) =>{
         })
         return res.status(200).json(email)
     }catch(error){
-        return res.status(400).json({mssg: 'Account already exist'})
+        return res.status(400).json(error)
     }
 }
 
@@ -55,7 +55,7 @@ const userLogin = async(req,res) =>{
         })
         return res.status(200).json(email)
     }catch(error){
-        return res.status(400).json({mssg: 'Account do not exist'})
+        return res.status(400).json(error)
     }
 }
 
