@@ -37,6 +37,9 @@ app.use('/column', columnRoute)
 app.use('/task',taskRoutes)
 app.use('/user', userRoutes)
 app.use('/userAuth', userAuth)
+app.get('/server/ping', (req,res)=>{
+    return res.status(200).json({message: 'Server is running'})
+})
 
 
 mongoose.connect(process.env.DB_URI)
