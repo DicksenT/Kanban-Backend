@@ -7,8 +7,22 @@ const cookieParser = require('cookie-parser')
 
 app.use(express.json())
 app.use(cookieParser())
+
+
+const allowOrigin = [
+    'http://localhost:5173',
+    'https://kanband.vercel.app/',
+    'https://kanbandicksen.netlify.app/'
+]
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback)=>{
+        if(allowOrigin.includes(origin) || !origin){
+            callback(null, true)
+        }
+        else{
+            callback(new Error("Link not allowed"))
+        }
+    },
     credentials:true
 }))
 
