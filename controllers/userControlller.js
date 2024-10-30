@@ -53,6 +53,9 @@ const userLogin = async(req,res) =>{
             maxAge: 7 * 24 * 60 * 60 * 1000,
             sameSite: 'strict'
         })
+
+        console.log(req.cookies);
+        
         return res.status(200).json({user: email})
     }catch(error){
         return res.status(400).json({message: error.message})
@@ -85,7 +88,7 @@ const getData = async(req,res) =>{
 }
 //refresh token
 const refreshToken = (req,res)=>{
-    const checkToken = req.cookie.refreshToken
+    const checkToken = req.cookies.refreshToken
     if(!checkToken){
         return res.status(401).json({mssg: 'Token Expired'})
     }
