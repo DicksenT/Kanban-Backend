@@ -93,7 +93,7 @@ const refreshToken = (req,res)=>{
     if(!checkToken){
         return res.status(401).json({mssg: 'Token Expired'})
     }
-    const verify = jwt.verify(refreshToken, process.env.REFRESH_SECRET)
+    const verify = jwt.verify(checkToken, process.env.REFRESH_SECRET)
     if(!verify){
         return res.status(401).json({mssg:'Invalid Refresh Token'})
     }
