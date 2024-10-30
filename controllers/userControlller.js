@@ -99,14 +99,19 @@ const refreshToken = (req,res)=>{
     }
 
     //aslong refresh token still active, generate newToken
-    const newToken = createToken(verify)
-    // replacing
-    res.cookie('token', newToken, {
-        httpOnly:true,
-        secure:true,
-        maxAge: 15 * 60 * 1000,
-        sameSite: 'none'
-    })
+    try{
+        const newToken = createToken(verify)
+        // replacing
+        res.cookie('token', newToken, {
+            httpOnly:true,
+            secure:true,
+            maxAge: 15 * 60 * 1000,
+            sameSite: 'none'
+        })
+        return res.status(200).json({mssg: 'Success Refresh'})
+    }catch(error){
+        return res.status(400).json({mssg: error})
+    }
 }
 
 const loginCheck = async(req,res) =>{
@@ -119,7 +124,7 @@ const loginCheck = async(req,res) =>{
         const user = await User.findById(decode.id)
         return res.status(200).json({user: user.email})
     }catch(error){
-        return res.status(401).json(error)
+        return res.status(400).json(error)
     }
 }
 
