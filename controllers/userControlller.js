@@ -100,7 +100,7 @@ const refreshToken = (req,res)=>{
 
     //aslong refresh token still active, generate newToken
     try{
-        const newToken = createToken(verify)
+        const newToken = createToken(verify.id)
         // replacing
         res.cookie('token', newToken, {
             httpOnly:true,
