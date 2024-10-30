@@ -89,8 +89,6 @@ const getData = async(req,res) =>{
 }
 //refresh token
 const refreshToken = (req,res)=>{
-    console.log(req.cookies);
-    
     const checkToken = req.cookies.refreshToken
     if(!checkToken){
         return res.status(401).json({mssg: 'Token Expired'})
@@ -112,7 +110,6 @@ const refreshToken = (req,res)=>{
 }
 
 const loginCheck = async(req,res) =>{
-    console.log(req.cookies);
     const token = req.cookies.token
     if(!token){
         return res.status(400).json('Token Expired')
