@@ -18,16 +18,16 @@ const userSignUp = async(req,res) =>{
         const token = createToken(newuser._id)
         res.cookie('token', token,{
             httpOnly:true,
-            secure:process.env.NODE_ENV === 'production',
+            secure:true,
             maxAge:15 * 60 * 1000,
-            sameSite:'strict'
+            sameSite:'none'
         })
         const refreshToken = createRefreshToken(newuser._id)
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
-            sameSite: 'strict'
+            sameSite: 'none'
         })
         return res.status(200).json({user: email})
     }catch(error){
@@ -42,16 +42,16 @@ const userLogin = async(req,res) =>{
         const token = createToken(user._id)
         res.cookie('token', token,{
             httpOnly:true,
-            secure:process.env.NODE_ENV === 'production',
+            secure:true,
             maxAge:15 * 60 * 1000,
-            sameSite:'strict'
+            sameSite:'none'
         })
         const refreshToken = createRefreshToken(user._id)
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
-            sameSite: 'strict'
+            sameSite: 'none'
         })
 
         console.log(req.cookies);
@@ -105,9 +105,9 @@ const refreshToken = (req,res)=>{
     // replacing
     res.cookie('token', newToken, {
         httpOnly:true,
-        secure:process.env.NODE_ENV === 'production',
+        secure:true,
         maxAge: 15 * 60 * 1000,
-        sameSite: 'strict'
+        sameSite: 'none'
     })
 }
 
