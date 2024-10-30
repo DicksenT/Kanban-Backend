@@ -116,7 +116,7 @@ const loginCheck = async(req,res) =>{
     }
     try{
         const decode = jwt.verify(token, process.env.SECRET)
-        const user = await User.find({_id:decode.id})
+        const user = await User.findById(decode.id)
         return res.status(200).json({user: user.email})
     }catch(error){
         return res.status(401).json(error)

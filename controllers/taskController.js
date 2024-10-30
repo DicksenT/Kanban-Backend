@@ -6,11 +6,11 @@ const Board = require('../model/boardModel')
 const addTask = async(req,res) =>{
     const userId = req.user.id
     const {colId, newTask, subtasks} = req.body
-    const col = await Column.find(colId)
+    const col = await Column.findById(colId)
     if(!col){
         return res.status(401).json({mssg:'column not available'})
     }
-    const board = await Board.find({_id:col.boardId, userId:userId})
+    const board = await Board.findOne({_id:col.boardId, userId:userId})
     if(!board){
         return res.state(401).json({mssg: 'Board is not found or unauthorized'})
     }
@@ -53,15 +53,15 @@ const editTask = async(req,res) =>{
     }
 
     try{
-        const updatedTask = await Task.find(id)
+        const updatedTask = await Task.findById(id)
         if(!updatedTask){
             return res.status(400).json({mssg: 'Task not found'})
         }
-        const col = await Column.find({_id: updatedTask.columnId})
+        const col = await Column.findOne({_id: updatedTask.columnId})
         if(!col){
             return res.status(400).json({mssg: 'col is not found'})
         }
-        const board = await Board.find({_id: col.boardId, userId:userId})
+        const board = await Board.findOne({_id: col.boardId, userId:userId})
         if(!board){
             return res.status(401).json({mssg: 'Board not found or user unauthorized'})
         }
@@ -95,17 +95,15 @@ const editTask = async(req,res) =>{
 
             const updatedSubtask = oldSubtask.concat(newlyCreateedSubtask)
 
-            const subtaskToDelete = updatedTask.subtasks.map(
-                (subtask) => !updatedSubtask.includes(subtask.toString())
-            )
+            const subtaskToDelete = updatedTask.subtasks.filter((subtask) => !updatedSubtask.includes(subtask.toString()))
 
             await Promise.all(subtaskToDelete.map(async(subtask) =>{
                 await Subtask.findByIdAndDelete(subtask)
             }))
 
-            await Task.findByIdAndUpdate(id,{
-                subtasks:updatedSubtask
-            })
+
+            updatedTask.subtasks=updatedSubtask
+
         }
 
         const returnTask = await Task.findById(id).populate('subtasks')
@@ -121,18 +119,18 @@ const delTask = async(req,res) =>{
     const {id} = req.params
 
     if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(400).jsoN({mssg: 'Id is not valid'})
+        return res.status(400).json({mssg: 'Id is not valid'})
     }
     try{
-        const task = await Task.find({_id:id})
+        const task = await Task.findOne({_id:id})
         if(!task){
             return res.status(400).json({mssg: 'Task not found'})
         }
-        const col = await Column.find({_id:task.columnId})
+        const col = await Column.findOne({_id:task.columnId})
         if(!col){
             return res.status(400).json({mssg: 'Column not  found'})
         }
-        const board = await Board.find({_id: col.boardId, userId: userId})
+        const board = await Board.findOne({_id: col.boardId, userId: userId})
         if(!board){
             return res.status(400).json({mssg: 'Board Not Found or User unauthorized'})
         }

@@ -9,7 +9,7 @@ const addColumn = async(req,res) =>{
     const col = new Column({boardId, name})
     await col.save()
 
-    const board = Board.find({_id:boardId, userId})
+    const board = Board.findOne({_id:boardId, userId})
     if(!board){
         return res.status(400).json({mssge: 'Board not found or unauthorized'})
     }
@@ -26,7 +26,7 @@ const deleteColumn = async(req, res) =>{
     const {id} = req.params
 
     if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(400).jsoN({mssg: 'Id is not valid'})
+        return res.status(400).json({mssg: 'Id is not valid'})
     }
 
     try{
@@ -35,7 +35,7 @@ const deleteColumn = async(req, res) =>{
             return res.status(400).json('col not found')
         }
 
-        const board = await Board.find({_id: col.boardId, userId: userId})
+        const board = await Board.findOne({_id: col.boardId, userId: userId})
         if(!board){
             return res.status(400).json({mssg: 'unauthorized access to this board'})
         }

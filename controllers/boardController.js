@@ -38,11 +38,11 @@ const editBoard = async(req,res) =>{
     const {name, columns} = req.body
 
     if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(400).jsoN({mssg: 'Id is not valid'})
+        return res.status(400).json({mssg: 'Id is not valid'})
     }
 
     try{
-        const updatedBoard = await Board.find({_id: id, userId:userId})
+        const updatedBoard = await Board.findOne({_id: id, userId:userId})
         if(!updatedBoard){
            return res.status(400).json({mssg:'Board Not Found'})
         }
@@ -114,7 +114,7 @@ const delBoard = async(req,res) =>{
         return res.status(400).json({mssg: 'Id is not valid'})
     }
     try{
-        const deletedBoard =await Board.find({_id:id, userId:userId})
+        const deletedBoard =await Board.findOne({_id:id, userId:userId})
         if(!deletedBoard){
             return res.status(400).json({mssg:'Board is not found or not authorized'})
         }
