@@ -11,7 +11,7 @@ const createRefreshToken = (id) =>{
 }
 
 const userSignUp = async(req,res) =>{
-    
+
     const {email, password} = req.body
     try{
         const newuser = await User.signUp(email, password)
@@ -69,7 +69,7 @@ const getData = async(req,res) =>{
     
     const userId = req.user.id
     try{
-        const user = new User.findById(userId)
+        const user = await User.findById(userId)
         .populate({
             path:'boards',
             populate:{
