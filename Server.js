@@ -38,9 +38,7 @@ app.use('/task',taskRoutes)
 app.use('/user', userRoutes)
 app.use('/userAuth', userAuth)
 app.get('/server/ping', (req,res)=>{
-    console.log('success ping');
-    return res.status(200).json('k')
-    
+    res.status(200).send('k')
 })
 
 
