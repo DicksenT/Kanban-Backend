@@ -23,7 +23,7 @@ const addBoard = async(req,res) =>{
             await newBoard.save()
         }
 
-        const returnBoard = await Board.findById(newBoard._id).populate('columns')
+        const returnBoard = await newBoard.populate('columns')
         return res.status(200).json(returnBoard)
     }catch(error){
         return res.status(400).json(error)
@@ -90,7 +90,7 @@ const editBoard = async(req,res) =>{
     
     await updatedBoard.save()
     //return the board, make sure to populate since it going to replace data in reducer
-    const returnBoard = await Board.findById(id).populate({
+    const returnBoard = await updatedBoard.populate({
         path:'columns',
         populate:{
             path:'task',

@@ -9,11 +9,10 @@ const addColumn = async(req,res) =>{
     const col = new Column({boardId, name})
     await col.save()
 
-    const board = Board.findOne({_id:boardId, userId})
+    const board = Board.updateOne({_id:boardId, userId: userId},{$push:{columns:col._id}})
     if(!board){
         return res.status(400).json({mssge: 'Board not found or unauthorized'})
     }
-    board.columns.push(...col._id)
     return res.status(200).json(col)
     }catch(error){
         return res.status(400).json(error)
@@ -34,7 +33,6 @@ const deleteColumn = async(req, res) =>{
         if(!col){
             return res.status(400).json('col not found')
         }
-
         const board = await Board.findOne({_id: col.boardId, userId: userId})
         if(!board){
             return res.status(400).json({mssg: 'unauthorized access to this board'})

@@ -65,8 +65,7 @@ const userLogin = async(req,res) =>{
 //Controller below need auth
 
 //get data
-const getData = async(req,res) =>{
-    
+const getData = async(req,res) =>{  
     const userId = req.user.id
     try{
         const user = await User.findById(userId)
