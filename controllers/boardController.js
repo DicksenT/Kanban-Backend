@@ -13,7 +13,7 @@ const addBoard = async(req,res) =>{
             const newColumns = await Promise.all(columns.map(async (column) =>{
                 const newCol = new Column({
                     boardId: newBoard._id,
-                    name: column
+                    name: column.name
                 })
                 await newCol.save()
                 return newCol._id
