@@ -6,9 +6,10 @@ const addBoard = async(req,res) =>{
     const userId = req.user.id
     const {name, columns} = req.body
     try{
+        console.log(req.body +' name '+ name + ' column:'+ columns);
+        console.log(userId);
+        
         const newBoard = new Board({userId, name})
-        await newBoard.save()
-
         if(columns){
             const newColumns = await Promise.all(columns.map(async (column) =>{
                 const newCol = new Column({
@@ -20,12 +21,13 @@ const addBoard = async(req,res) =>{
             }))
 
             newBoard.columns = newColumns
-            await newBoard.save()
         }
-
+        await newBoard.save()
         const returnBoard = await newBoard.populate('columns')
         return res.status(200).json(returnBoard)
     }catch(error){
+        console.log(error);
+        
         return res.status(400).json(error)
     }
 }
