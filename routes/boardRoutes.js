@@ -6,7 +6,7 @@ const requireAuth = require('../middleware/requireAuth')
 //verify token first before going further
 router.use(requireAuth)
 
-router.post('/addBoard', addBoard)
+router.post('/', addBoard)
 router.patch('/:id', editBoard)
 router.delete('/:id', delBoard) 
 
