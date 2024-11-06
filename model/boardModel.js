@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
-const schema = mongoose.Schema
+const Schema = mongoose.Schema
 const User = require('./userModel')
 const Column = require('./columnModel')
 
-const boardScheme = new schema({
+const boardScheme = new Schema({
     userId:{type:mongoose.Schema.Types.ObjectId, ref:'User', required:true},
     name:{
         type:String,

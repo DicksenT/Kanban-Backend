@@ -43,4 +43,4 @@ columnScheme.pre('deleteMany', handleColumnDelete)
 
 columnScheme.pre('remove', handleColumnDelete)
 
-module.exports = mongoose.model('Columns', columnScheme)
+module.exports = mongoose.model('Column', columnScheme)

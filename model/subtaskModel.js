@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const scheme = mongoose.Schema
+const schema = mongoose.Schema
 const Task = require('./taskModel')
 
 const subtaskSchema = new scheme({
@@ -33,4 +33,4 @@ subtaskSchema.pre('deleteMany', handleDelete)
 subtaskSchema.pre('remove', handleDelete)
 
 
-module.exports = mongoose.model('Subtasks', subtaskSchema)
+module.exports = mongoose.model('Subtask', subtaskSchema)
