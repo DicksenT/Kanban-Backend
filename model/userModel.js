@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs')
 const userScheme = new scheme({
     email:{type:String, required:true, unique:true},
     password:{type:String, required:true},
-    boards:[{type:mongoose.Schema.Types.ObjectId}]
+    boards:[{type:mongoose.Schema.Types.ObjectId, ref:'Board'}]
 })
 
 

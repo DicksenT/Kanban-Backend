@@ -3,7 +3,7 @@ const schema = mongoose.Schema
 const Task = require('./taskModel')
 
 const subtaskSchema = new schema({
-    taskid:{type:mongoose.Schema.Types.ObjectId, required:true, ref:'Tasks'},
+    taskid:{type:mongoose.Schema.Types.ObjectId, required:true, ref:'Task'},
     title:{type:String, required:true},
     isCompleted:{type:Boolean, required:true}
 })

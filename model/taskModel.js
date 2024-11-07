@@ -7,7 +7,7 @@ const taskScheme = new scheme({
     columnId:{type:mongoose.Schema.Types.ObjectId, required:true,ref:'Columns'},
     title:{type:String, required:true},
     description:{type:String},
-    subtasks:[{type:mongoose.Schema.Types.ObjectId, ref:'Subtasks'}]
+    subtasks:[{type:mongoose.Schema.Types.ObjectId, ref:'Subtask'}]
 })
 
 const handleTaskDelete = async function(next){

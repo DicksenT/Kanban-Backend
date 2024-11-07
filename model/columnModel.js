@@ -6,7 +6,7 @@ const Task = require('./taskModel')
 const columnScheme = new scheme({
     boardId:{type:mongoose.Schema.Types.ObjectId, required:true,ref:'Board'},
     name:{type:String, required:true},
-    tasks:[{type:mongoose.Schema.Types.ObjectId, ref:'Tasks'}]
+    tasks:[{type:mongoose.Schema.Types.ObjectId, ref:'Task'}]
 })
 
 
