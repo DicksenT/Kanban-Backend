@@ -97,7 +97,7 @@ const editBoard = async(req,res) =>{
     const returnBoard = await updatedBoard.populate({
         path:'columns',
         populate:{
-            path:'task',
+            path:'tasks',
             populate: {
                 path:'subtasks'
             }
