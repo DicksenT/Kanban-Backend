@@ -1,5 +1,6 @@
 const Board = require('../model/boardModel')
 const Column = require('../model/columnModel')
+const User = require('../model/userModel')
 const mongoose = require('mongoose')
 
 const addBoard = async(req,res) =>{
@@ -23,6 +24,7 @@ const addBoard = async(req,res) =>{
             newBoard.columns = newColumns
         }
         await newBoard.save()
+        const user = User.updateOne({_id:userId}, {$push:{boards:newBoard._id}})
         const returnBoard = await newBoard.populate('columns')
         return res.status(200).json(returnBoard)
     }catch(error){
