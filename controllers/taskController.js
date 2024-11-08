@@ -23,8 +23,7 @@ const addTask = async(req,res) =>{
         const task = new Task({
             columnId: colId,
             title:newTask.title,
-            description:newTask.description,
-            status:newTask.status
+            description:newTask.description
         })
         
         if(subtasks){
@@ -53,7 +52,7 @@ const addTask = async(req,res) =>{
 const editTask = async(req,res) =>{
     const userId = req.user.id
     const {id} = req.params
-    const {task, subtasks} = req.body
+    const {newTask, subtasks} = req.body
 
     if(!mongoose.Types.ObjectId.isValid(id)){
         return res.status(400).jsoN({mssg: 'Id is not valid'})
@@ -72,9 +71,8 @@ const editTask = async(req,res) =>{
         if(!board){
             return res.status(401).json({mssg: 'Board not found or user unauthorized'})
         }
-        updatedTask.title = task.title
-        updatedTask.description = task.description
-        updatedTask.status = task.status
+        updatedTask.title = newTask.title
+        updatedTask.description = newTask.description
 
         if(subtasks){
             const newSubtask = []
