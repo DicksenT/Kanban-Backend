@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 const addTask = async(req,res) =>{
     const userId = req.user.id
     const {colId, newTask, subtasks} = req.body
-    if(!mongoose.Types.ObjectId.isValid(id)){
+    if(!mongoose.Types.ObjectId.isValid(colId)){
         return res.status(400).json({mssg: 'id is not valid'})
     }
     try{
