@@ -130,7 +130,7 @@ const delTask = async(req,res) =>{
         return res.status(400).json({mssg: 'Id is not valid'})
     }
     try{
-        const task = await Task.findById(id).populate({
+        const task = await Task.findOne(id).populate({
             path: 'columnId',
             populate:{
                 path:'boardId',

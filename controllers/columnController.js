@@ -29,7 +29,7 @@ const deleteColumn = async(req, res) =>{
     }
 
     try{
-        const col = await Column.findById(id)
+        const col = await Column.findByIdAndDelete(id)
         if(!col){
             return res.status(400).json('col not found')
         }
@@ -37,7 +37,6 @@ const deleteColumn = async(req, res) =>{
         if(!board){
             return res.status(400).json({mssg: 'unauthorized access to this board'})
         }
-        await col.remove()
         return res.status(200).json(col)
     }catch(error){
         return res.status(400).json(error)

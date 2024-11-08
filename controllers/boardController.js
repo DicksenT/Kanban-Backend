@@ -118,11 +118,10 @@ const delBoard = async(req,res) =>{
         return res.status(400).json({mssg: 'Id is not valid'})
     }
     try{
-        const deletedBoard =await Board.findOne({_id:id, userId:userId})
+        const deletedBoard =await Board.deleteOne({_id:id, userId:userId})
         if(!deletedBoard){
             return res.status(400).json({mssg:'Board is not found or not authorized'})
         }
-        await deletedBoard.remove()
         return res.status(200).json({mssg: 'Board deleted successfully'})
     }catch(error){
         return res.status(400).json(error)
