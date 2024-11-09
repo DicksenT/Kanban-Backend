@@ -17,7 +17,7 @@ const addTask = async(req,res) =>{
         }
         const board = await Board.findOne({_id:col.boardId, userId:userId})
         if(!board){
-            return res.state(404).json({mssg: 'Board is not found or unauthorized'})
+            return res.status(404).json({mssg: 'Board is not found or unauthorized'})
         }
     
         const task = new Task({
@@ -25,7 +25,6 @@ const addTask = async(req,res) =>{
             title:newTask.title,
             description:newTask.description
         })
-        
         if(subtasks){
             const newSubtasks = await Promise.all(subtasks.map(async(subtask) =>{
                 const newsubtask = new Subtask({
@@ -34,13 +33,13 @@ const addTask = async(req,res) =>{
                     isCompleted:false
                 })
                 await newsubtask.save()
-                return newSubtasks._id
+                return newsubtask._id
             }))
             task.subtasks = newSubtasks
         }
 
         await task.save()
-        col.tasks = [...col.tasks, task._id]
+        col.tasks.push(task._id)
         await col.save()
         const returnTask = await task.populate('subtasks')
         return res.status(200).json(returnTask)
