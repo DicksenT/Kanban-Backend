@@ -134,8 +134,10 @@ const delTask = async(req,res) =>{
                 select: '_id userId'
             }
         })
-        
-        await task.remove()
+        if(!task || !task.columnId || !task.columnId.boardId){
+            return res.status(404).json({mssg: 'not Found'})
+        }
+        await Task.findByIdAndDelete(id)
         return res.status(200).json({mssg:'Task Successfully deleted'})
     }catch(error){
         return res.status(400).json(error)
@@ -168,7 +170,7 @@ const changeSubtask = async(req, res) =>{
         await subtask.save()
         return res.status(200).json(subtask)
     }catch(error){
-        return res.status(400).json(error)
+        return res.status(400).json({mssg: error + 'error please check'})
     }
     
 }
