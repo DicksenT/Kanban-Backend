@@ -89,7 +89,7 @@ const editTask = async(req,res) =>{
 
             const newlyCreateedSubtask = await Promise.all(newSubtask.map(async(subtask) =>{
                 const newSub = new Subtask({
-                    taskId:id,
+                    taskid:id,
                     title:subtask.title,
                     description:subtask.description,
                     status:subtask.status
