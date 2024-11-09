@@ -126,7 +126,7 @@ const delTask = async(req,res) =>{
         return res.status(400).json({mssg: 'Id is not valid'})
     }
     try{
-        const task = await Task.findOne(id).populate({
+        const task = await Task.findOne({_id:id}).populate({
             path: 'columnId',
             populate:{
                 path:'boardId',
@@ -168,7 +168,7 @@ const changeSubtask = async(req, res) =>{
         await subtask.save()
         return res.status(200).json(subtask)
     }catch(error){
-        return res.status(200).json(error)
+        return res.status(400).json(error)
     }
     
 }
