@@ -26,6 +26,8 @@ app.use(cors({
     credentials:true
 }))
 
+app.options('*', cors())
+
 //ROUTES
 const boardRoute = require('./routes/boardRoutes')
 const columnRoute = require('./routes/columnRoutes')
