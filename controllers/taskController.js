@@ -126,16 +126,17 @@ const delTask = async(req,res) =>{
         return res.status(400).json({mssg: 'Id is not valid'})
     }
     try{
-        const task = await Task.findOne({_id:id}).populate({
-            path: 'columnId',
-            populate:{
-                path:'boardId',
-                match:{userId: userId},
-                select: '_id userId'
-            }
-        })
-        if(!task || !task.columnId || !task.columnId.boardId){
-            return res.status(404).json({mssg: 'not Found'})
+        const updatedTask = await Task.findById(id)
+        if(!updatedTask){
+            return res.status(400).json({mssg: 'Task not found'})
+        }
+        const col = await Column.findOne({_id: updatedTask.columnId})
+        if(!col){
+            return res.status(400).json({mssg: 'col is not found'})
+        }
+        const board = await Board.findOne({_id: col.boardId, userId:userId})
+        if(!board){
+            return res.status(401).json({mssg: 'Board not found or user unauthorized'})
         }
         await Task.findByIdAndDelete(id)
         return res.status(200).json({mssg:'Task Successfully deleted'})
