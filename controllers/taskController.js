@@ -36,7 +36,7 @@ const addTask = async(req,res) =>{
                 await newsubtask.save()
                 return newSubtasks._id
             }))
-            task.subtasks.push(...newSubtasks)
+            task.subtasks = newSubtasks
         }
 
         await task.save()
