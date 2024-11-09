@@ -153,19 +153,21 @@ const changeSubtask = async(req, res) =>{
         return res.status(400).json({mssg: 'id is not valid'})
     }
     try{
-        const subtask = await Subtask.findById(id).populate({
-            path:'taskId',
-            populate:{
-                path:'columnId',
-                populate:{
-                    path:'boardId',
-                    match:{userId: userId},
-                    select:'_id userId'
-                }
-            }
-        })
-        if(!subtask || !subtask.taskid || !subtask.taskid.columnId || !subtask.taskid.columnId.boardId){
-            return res.status(404).json({mssg: 'Not Found or unauthorized'})
+        const subtask = await Subtask.findById(id)
+        if(!subtask){
+            return res.state(400).json({mssg: 'not found'})
+        }
+        const updatedTask = await Task.findById(subtask.taskid)
+        if(!updatedTask){
+            return res.status(400).json({mssg: 'Task not found'})
+        }
+        const col = await Column.findOne({_id: updatedTask.columnId})
+        if(!col){
+            return res.status(400).json({mssg: 'col is not found'})
+        }
+        const board = await Board.findOne({_id: col.boardId, userId:userId})
+        if(!board){
+            return res.status(401).json({mssg: 'Board not found or user unauthorized'})
         }
         subtask.isCompleted = !subtask.isCompleted
         await subtask.save()
@@ -185,16 +187,17 @@ const changeStatus = async(req,res) =>{
     }
     try{
     //verifying task and all related collection until board,
-    const task = await Task.findById(id).populate({
-        path:'columnId',
-        populate:{
-            path:'boardId',
-            match:{userId: req.user.id},
-            select:'_id, userId'
-        }
-    })
-    if(!task || !task.columnId || !task.columnId.boardId){
-        return res.status(404).json({mssg: 'Not Found or unauthorized'})
+    const task = await Task.findById(id)
+    if(!updatedTask){
+        return res.status(400).json({mssg: 'Task not found'})
+    }
+    const col = await Column.findOne({_id: updatedTask.columnId})
+    if(!col){
+        return res.status(400).json({mssg: 'col is not found'})
+    }
+    const board = await Board.findOne({_id: col.boardId, userId:userId})
+    if(!board){
+        return res.status(401).json({mssg: 'Board not found or user unauthorized'})
     }
         //removing taskId from old column
         await Column.updateOne({_id:task.columnId._id},{$pull:{tasks: task._id}})
