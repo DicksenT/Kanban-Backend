@@ -91,8 +91,7 @@ const editTask = async(req,res) =>{
                 const newSub = new Subtask({
                     taskid:id,
                     title:subtask.title,
-                    description:subtask.description,
-                    status:subtask.status
+                    isCompleted: false
                 })
                 await newSub.save()
                 return newSub._id
