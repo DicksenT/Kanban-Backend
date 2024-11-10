@@ -200,14 +200,14 @@ const changeStatus = async(req,res) =>{
         return res.status(401).json({mssg: 'Board not found or user unauthorized'})
     }
         //removing taskId from old column
-        await Column.updateOne({_id:task.columnId._id},{$pull:{tasks: task._id}})
+        await Column.updateOne({_id:col._id},{$pull:{tasks: task._id}})
 
         //set new column id in task
-        task.columnId = newCol
+        task.columnId = newCol._id
         await task.save()
 
         //add task id to new column
-        await Column.updateOne({_id: newCol}, {$push:{tasks: task._id}})
+        await Column.updateOne({_id: newCol._id}, {$push:{tasks: task._id}})
 
 
         const returnTask = await task.populate('subtasks')
