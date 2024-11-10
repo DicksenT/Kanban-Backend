@@ -180,6 +180,7 @@ const changeSubtask = async(req, res) =>{
 
 
 const changeStatus = async(req,res) =>{
+    const userId = req.user.id
     const {id} = req.params
     const {newCol} = req.body
     if(!mongoose.Types.ObjectId.isValid(id)){
