@@ -191,7 +191,7 @@ const changeStatus = async(req,res) =>{
     if(!task){
         return res.status(400).json({mssg: 'Task not found'})
     }
-    const col = await Column.findOne({_id: updatedTask.columnId})
+    const col = await Column.findOne({_id: task.columnId})
     if(!col){
         return res.status(400).json({mssg: 'col is not found'})
     }
@@ -203,11 +203,11 @@ const changeStatus = async(req,res) =>{
         await Column.updateOne({_id:col._id},{$pull:{tasks: task._id}})
 
         //set new column id in task
-        task.columnId = newCol._id
+        task.columnId = newCol
         await task.save()
 
         //add task id to new column
-        await Column.updateOne({_id: newCol._id}, {$push:{tasks: task._id}})
+        await Column.updateOne({_id: newCol}, {$push:{tasks: task._id}})
 
 
         const returnTask = await task.populate('subtasks')
