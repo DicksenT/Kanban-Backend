@@ -188,7 +188,7 @@ const changeStatus = async(req,res) =>{
     try{
     //verifying task and all related collection until board,
     const task = await Task.findById(id)
-    if(!updatedTask){
+    if(!task){
         return res.status(400).json({mssg: 'Task not found'})
     }
     const col = await Column.findOne({_id: updatedTask.columnId})
