@@ -12,7 +12,10 @@ const boardScheme = new Schema({
     columns:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Column'
-    }]
+    }],
+    totalTask:{
+        type:Number
+    }
 })
 
 //if board got remove, this function make sure to also delete column collection
@@ -43,5 +46,6 @@ const handleDelete = async function(next){
 
 boardScheme.pre('deleteMany', handleDelete)
 boardScheme.pre('remove', handleDelete)
+boardScheme.pre('findOneAndDelete', handleDelete)
 
 module.exports = mongoose.model('Board', boardScheme)

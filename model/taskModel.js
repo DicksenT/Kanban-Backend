@@ -35,5 +35,6 @@ const handleTaskDelete = async function(next){
 
 taskScheme.pre('deleteMany', handleTaskDelete)
 taskScheme.pre('remove', handleTaskDelete)
+taskScheme.pre('findOneAndDelete', handleTaskDelete)
 
 module.exports = mongoose.model('Task', taskScheme)

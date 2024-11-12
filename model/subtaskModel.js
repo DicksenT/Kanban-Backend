@@ -31,6 +31,6 @@ const handleDelete = async function(next){
 
 subtaskSchema.pre('deleteMany', handleDelete)
 subtaskSchema.pre('remove', handleDelete)
-
+subtaskSchema.pre('findOneAndDelete', handleDelete)
 
 module.exports = mongoose.model('Subtask', subtaskSchema)

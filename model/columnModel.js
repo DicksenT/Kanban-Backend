@@ -23,7 +23,6 @@ const handleColumnDelete = async function(next) {
         }
         else{
             await Task.deleteMany({columnId:this._id})
-
             //to remove the reference in board
             await Board.updateOne(
                 {_id: this.boardId},
@@ -40,7 +39,6 @@ const handleColumnDelete = async function(next) {
 }
 
 columnScheme.pre('deleteMany', handleColumnDelete)
-
 columnScheme.pre('remove', handleColumnDelete)
-
+columnScheme.pre('findOneAndDelete', handleColumnDelete)
 module.exports = mongoose.model('Column', columnScheme)
