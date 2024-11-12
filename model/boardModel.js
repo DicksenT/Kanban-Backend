@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const User = require('./userModel')
-const Column = require('./columnModel')
+
 
 const boardScheme = new Schema({
     userId:{type:mongoose.Schema.Types.ObjectId, ref:'User', required:true},
@@ -21,6 +20,8 @@ const boardScheme = new Schema({
 //if board got remove, this function make sure to also delete column collection
 //run before the hooks run
 const handleDelete = async function(next){
+    const User = require('./userModel')
+    const Column = require('./columnModel')
     try{
         if(this instanceof mongoose.Query){
             const filter = this.getQuery()
@@ -46,6 +47,6 @@ const handleDelete = async function(next){
 
 boardScheme.pre('deleteMany', handleDelete)
 boardScheme.pre('remove', handleDelete)
-boardScheme.pre('findOneAndDelete', handleDelete)
+boardScheme.pre('findOneAndDelete', hand)
 
 module.exports = mongoose.model('Board', boardScheme)

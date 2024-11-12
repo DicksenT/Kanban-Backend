@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 const scheme = mongoose.Schema
-const Subtask = require('./subtaskModel')
-const Column = require('./columnModel')
 
 const taskScheme = new scheme({
     columnId:{type:mongoose.Schema.Types.ObjectId, required:true,ref:'Columns'},
@@ -11,6 +9,9 @@ const taskScheme = new scheme({
 })
 
 const handleTaskDelete = async function(next){
+    const Subtask = require('./subtaskModel')
+    const Column = require('./columnModel')
+
     try{
         if(this instanceof mongoose.Query){
             const filter = this.getQuery()

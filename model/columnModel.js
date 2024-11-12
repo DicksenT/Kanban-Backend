@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 const scheme = mongoose.Schema
-const Board = require('./boardModel')
-const Task = require('./taskModel')
 
 const columnScheme = new scheme({
     boardId:{type:mongoose.Schema.Types.ObjectId, required:true,ref:'Board'},
@@ -11,6 +9,9 @@ const columnScheme = new scheme({
 
 
 const handleColumnDelete = async function(next) {
+    const Board = require('./boardModel')
+    const Task = require('./taskModel')
+
     try{
         //need to make sure the "this" since deleteMany is interact with database
         if(this instanceof mongoose.Query){
