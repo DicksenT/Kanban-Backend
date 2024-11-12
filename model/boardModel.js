@@ -47,6 +47,6 @@ const handleDelete = async function(next){
 
 boardScheme.pre('deleteMany', handleDelete)
 boardScheme.pre('remove', handleDelete)
-boardScheme.pre('findOneAndDelete', hand)
+boardScheme.pre('findOneAndDelete', handleDelete)
 
 module.exports = mongoose.model('Board', boardScheme)
