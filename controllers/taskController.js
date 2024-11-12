@@ -37,10 +37,11 @@ const addTask = async(req,res) =>{
             }))
             task.subtasks = newSubtasks
         }
-
         await task.save()
         col.tasks.push(task._id)
         await col.save()
+        board.totalTask++
+        await board.save()
         const returnTask = await task.populate('subtasks')
         return res.status(200).json(returnTask)
     }catch(error){

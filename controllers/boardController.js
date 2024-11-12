@@ -7,10 +7,7 @@ const addBoard = async(req,res) =>{
     const userId = req.user.id
     const {name, columns} = req.body
     try{
-        console.log(req.body +' name '+ name + ' column:'+ columns);
-        console.log(userId);
-        
-        const newBoard = new Board({userId, name})
+        const newBoard = new Board({userId, name, totalTask:0})
         if(columns){
             const newColumns = await Promise.all(columns.map(async (column) =>{
                 const newCol = new Column({
