@@ -139,6 +139,7 @@ const delTask = async(req,res) =>{
         if(!board){
             return res.status(401).json({mssg: 'Board not found or user unauthorized'})
         }
+        board.totalTask--
         await Task.findByIdAndDelete(id)
         return res.status(200).json({mssg:'Task Successfully deleted'})
     }catch(error){
