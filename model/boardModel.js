@@ -25,14 +25,14 @@ const handleDelete = async function(next){
     try{
         if(this instanceof mongoose.Query){
             const filter = this.getQuery()
-            await Column.deleteMany(filter._id)
+            await Column.deleteMany({boardId: filter._id})
             await User.updateOne(
-                {_id: filter._id},
+                {_id: filter.userId},
                 {$pull: {boards: filter._id}}
             )
         }
         else{
-            await Column.deleteMany(this._id)
+            await Column.deleteMany({boardId: this._id})
             await User.updateOne(
                 {_id: this.userId},
                 {$pull:{boards: this._id}}
