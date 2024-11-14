@@ -11,8 +11,8 @@ app.use(cookieParser())
 
 const allowOrigin = [
     'http://localhost:5173',
-    'https://kanband.vercel.app/',
-    'https://kanbandicksen.netlify.app/'
+    'https://kanband.vercel.app',
+    'https://kanbandicksen.netlify.app'
 ]
 app.use(cors({
     origin: (origin, callback)=>{
