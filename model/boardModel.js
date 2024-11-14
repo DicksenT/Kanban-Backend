@@ -22,21 +22,48 @@ const boardScheme = new Schema({
 const handleDelete = async function(next){
     const User = require('./userModel')
     const Column = require('./columnModel')
+    const Task = require('./taskModel')
+    const Subtask = require('./subtaskModel')
+
     try{
         if(this instanceof mongoose.Query){
             const filter = this.getQuery()
-            await Column.deleteMany({boardId: filter._id})
-            await User.updateOne(
-                {_id: filter.userId},
-                {$pull: {boards: filter._id}}
-            )
+            const columns = await Column.find({boardId: filter._id})
+            //extract only the _id since $in only accept array of _id
+            const columnId = columns.map((col) => col._id)
+
+            const tasks = await Task.find({columnId: {$in: columnId}})
+            const taskId = tasks.map((task) => task._id)
+
+
+            
+            await Promise.all([
+                Column.deleteMany({boardId: filter._id}),
+                Task.deleteMany({columnId: {$in: columnId}}),
+                Subtask.deleteMany({taskid: {$in: taskId}}),
+                User.updateOne(
+                    {_id: filter.userId},
+                    {$pull: {boards: filter._id}}
+                )
+            ])
+   
         }
         else{
-            await Column.deleteMany({boardId: this._id})
-            await User.updateOne(
-                {_id: this.userId},
-                {$pull:{boards: this._id}}
-            )
+            const columns = await Column.find({boardId: this._id})
+            const columnId = columns.map((column) => column._id)
+    
+            const tasks = await Task.find({columnId: {$in: columnId}})
+            const taskId = tasks.map((task) =>task._id)
+            
+            await Promise.all([
+                Column.deleteMany({boardId: this._id}),
+                Task.deleteMany({columnId: {$in: columnId}}),
+                Subtask.deleteMany({taskid: {$in: taskId}}),
+                User.updateOne(
+                    {_id: this.userId},
+                    {$pull: {boards: this._id}}
+                )
+            ])
         }
         next()
     }catch(error){

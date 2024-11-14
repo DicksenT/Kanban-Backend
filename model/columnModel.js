@@ -11,25 +11,36 @@ const columnScheme = new scheme({
 const handleColumnDelete = async function(next) {
     const Board = require('./boardModel')
     const Task = require('./taskModel')
+    const Subtask = require('./subtaskModel')
 
     try{
         //need to make sure the "this" since deleteMany is interact with database
         if(this instanceof mongoose.Query){
             const filter = this.getQuery()
-            await Task.deleteMany({columnId:filter._id})
-            await Board.updateOne(
-                {_id: filter.boardId},
-                {$pull:{columns: filter._id}}
-            )
+            const tasks = await Task.find({columnId: filter._id})
+            const taskId = tasks.map((task) => task._id) 
+            await Promise.all([
+                Task.deleteMany({columnId:filter._id}),
+                Subtask.deleteMany({taskid: {$in: taskId}}),
+                Board.updateOne(
+                    {_id: filter.boardId},
+                    {$pull:{columns: filter._id}}
+                )
+            ])
+      
         }
         else{
-            await Task.deleteMany({columnId:this._id})
-            //to remove the reference in board
-            await Board.updateOne(
-                {_id: this.boardId},
-                {$pull:{columns:this._id}}
-
-            )
+            const tasks = await Task.find({columnId: this._id})
+            const taskId = tasks.map((task) => task._id)
+            
+            await Promise.all([
+                Task.deleteMany({columnId:this._id}),
+                Subtask.deleteMany({taskid: {$in: taskId}}),
+                Board.updateOne(
+                    {_id: this.boardId},
+                    {$pull:{columns: this._id}}
+                )
+            ])
         }
 
         next()
