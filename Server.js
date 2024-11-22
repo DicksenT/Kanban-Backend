@@ -39,8 +39,8 @@ app.use('/column', columnRoute)
 app.use('/task',taskRoutes)
 app.use('/user', userRoutes)
 app.use('/userAuth', userAuth)
-app.get('/server/ping', (req,res)=>{
-    res.status(200).send('k')
+app.get('/server/ping', (req,res,next)=>{
+    res.status(200).end()
 })
 
 
